@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бункер: Поколение Альфа</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game">
+    <h1>Бункер: Поколение Альфа</h1>
+    <div id="players"></div>
+    <div id="cards"></div>
+    <div id="controls">
+      <button id="nextRound">Следующий раунд</button>
+    </div>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>

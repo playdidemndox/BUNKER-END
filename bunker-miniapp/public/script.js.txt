@@ -1,0 +1,36 @@
+let roomId = 'room1';
+let playerNames = ['Игрок1','Игрок2','Игрок3'];
+let roomData = null;
+
+async function createRoom(){
+  const res = await fetch('/api/room/create',{
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ id: roomId, playerNames })
+  });
+  roomData = await res.json();
+  console.log('Комната создана', roomData);
+  renderPlayers();
+}
+
+async function fetchRoom(){
+  const res = await fetch(`/api/room/${roomId}`);
+  roomData = await res.json();
+  renderPlayers();
+}
+
+function renderPlayers(){
+  const div = document.getElementById('players');
+  div.innerHTML='';
+  roomData.players.forEach(p=>{
+    const pDiv = document.createElement('div');
+    pDiv.textContent = `${p.name} ${p.isExiled? '(Исключен)':''}`;
+    div.appendChild(pDiv);
+  });
+}
+
+document.getElementById('nextRound').addEventListener('click', async ()=>{
+  await fetchRoom();
+});
+
+createRoom();

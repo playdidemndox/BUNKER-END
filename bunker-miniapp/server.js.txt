@@ -1,0 +1,43 @@
+const TelegramBot = require('node-telegram-bot-api');
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+
+const TOKEN = '8505568581:AAFqPR_VNPVFp4FK7-JZm_IRinQ2NjR3y-M'; // твой токен
+const WEBAPP_URL = 'https://твоя-ссылка-на-miniapp'; // Заменить на реально задеплоенный URL
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+const PORT = process.env.PORT || 3000;
+
+// Telegram bot webhook
+const bot = new TelegramBot(TOKEN);
+bot.setWebHook(`${WEBAPP_URL}/bot${TOKEN}`);
+
+app.post(`/bot${TOKEN}`, (req,res)=>{
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
+bot.onText(/\/start/, msg=>{
+  bot.sendMessage(msg.chat.id, 'Mini App работает 🚀', {
+    reply_markup:{
+      inline_keyboard:[
+        [{ text:'🎮 ИГРАТЬ', web_app:{ url: WEBAPP_URL } }]
+      ]
+    }
+  });
+});
+
+// --- Карты ---
+const cardsData = JSON.parse(fs.readFileSync(path.join(__dirname,'public','cards.json'),'utf-8'));
+
+// --- Комнаты ---
+const rooms = {};
+
+// --- Создать комнату ---
+app.po
